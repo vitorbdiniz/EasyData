@@ -73,3 +73,20 @@ def standard_deviation(data):
     else:
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
     return std
+
+def outliers(data,q = 0.25, m = 1.5):
+    """
+        q: {float} quantile
+        m: {float} multiplier
+        Returns an array which contains the outliers row-indexes
+    """
+    outlier_lines = []
+    sup = np.quantile(data, q=1-q)
+    inf = np.quantile(data, q=q)
+    sup += st.stdev(data)*m
+    inf -= st.stdev(data)*m
+    for i in range(len(data)):
+        if data[i] > sup or data[i] < inf:
+            outlier_lines.append(i)
+    return outlier_lines
+
