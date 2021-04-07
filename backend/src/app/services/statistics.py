@@ -28,5 +28,17 @@ def median(data):
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
     return avg
 
+def mode(data):
+    """
+
+
+    """
+    data_df = pd.DataFrame(data)
+    if data_df.shape[1] > 0:
+        avg = data.mode()
+    else:
+        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    return avg    
+
 
 
