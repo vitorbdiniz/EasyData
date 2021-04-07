@@ -63,3 +63,13 @@ def variance(data):
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
     return var
 
+def standard_deviation(data):
+    """
+
+    """    
+    data_df = pd.DataFrame(data)
+    if data_df.shape[1] > 0:
+        std = data_df.std()
+    else:
+        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    return std
