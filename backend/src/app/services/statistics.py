@@ -23,10 +23,10 @@ def median(data):
     """
     data_df = pd.DataFrame(data)
     if data_df.shape[1] > 0:
-        avg = data.median()
+        med = data.median()
     else:
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
-    return avg
+    return med
 
 def mode(data):
     """
@@ -35,10 +35,10 @@ def mode(data):
     """
     data_df = pd.DataFrame(data)
     if data_df.shape[1] > 0:
-        avg = data.mode()
+        mo = data.mode()
     else:
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
-    return avg    
+    return mo    
 
 def quantile(data, q):
     """
@@ -51,4 +51,15 @@ def quantile(data, q):
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
     return pd.Series(quantiles, index=data_df.columns)
 
+
+def variance(data):
+    """
+
+    """    
+    data_df = pd.DataFrame(data)
+    if data_df.shape[1] > 0:
+        var = data_df.var()
+    else:
+        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    return var
 
