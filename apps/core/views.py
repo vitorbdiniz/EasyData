@@ -2,8 +2,8 @@ from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from core.models import Sample
-from core.serializers import SampleSerializer
+from apps.core.models import Sample
+from apps.core.serializers import SampleSerializer
 
 class Entrada(APIView):
     

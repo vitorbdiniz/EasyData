@@ -1,7 +1,7 @@
 from rest_framework import serializers
 import json
 
-from core.models import Sample
+from apps.core.models import Sample
 
 class SampleSerializer(serializers.ModelSerializer):
 
