@@ -1,7 +1,8 @@
 from django.urls import path
-from apps.core.views import Entrada, Teste
+from apps.core.views import Register, Authenticate
 
 urlpatterns = [
-    path('', Entrada.as_view(), name='teste'),
-    path('sample', Teste.as_view(), name='sample'),
+    # auth
+    path('users/register', Register.as_view(), name='register'),
+    path('users/authenticate', Authenticate.as_view(), name='authenticate'),
 ]
