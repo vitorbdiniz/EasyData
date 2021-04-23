@@ -16,7 +16,8 @@ class UploadCsvSerializer(serializers.ModelSerializer):
 
 
 class CsvFileSerializer(serializers.ModelSerializer):
-    file = serializers.URLField(read_only=True)
+    id = serializers.IntegerField()
+    file = serializers.FileField()
 
     class Meta:
         model = CsvFile

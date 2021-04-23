@@ -1,6 +1,7 @@
 from django.urls import path
-from apps.core.views import UploadCsv
+from apps.core.views import StatisticsCsv, StatisticsCalculate
 
 urlpatterns = [
-    path('upload', UploadCsv.as_view(), name='upload'),
+    path('statistics', StatisticsCsv.as_view(), name='statistics-csv'),
+    path('statistics/<int:csv_id>', StatisticsCalculate.as_view(), name='statistics'),
 ]
