@@ -4,6 +4,7 @@
 __pycache__/
 env/
 media/
+migrations/
 fixtures/
 *.sqlite3
 *.env
