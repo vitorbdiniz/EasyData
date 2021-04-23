@@ -15,7 +15,7 @@ ROOT_DIR = BASE_DIR.parent
 
 # Uploaded files from users
 MEDIA_URL = '/media/'
-MEDIA_ROOT = ROOT_DIR / "media"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files
 STATIC_URL = '/static/'
@@ -46,9 +46,9 @@ INSTALLED_APPS = [
 
     # third party packages
     'rest_framework',
-    # 'rest_framework.authtoken',
+    'rest_framework.authtoken',
 
-    'core'
+    'apps.core'
 ]
 
 MIDDLEWARE = [
@@ -62,6 +62,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'easydata.urls'
+
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
 
 TEMPLATES = [
     {
@@ -81,16 +92,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'easydata.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': config(

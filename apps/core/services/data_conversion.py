@@ -12,6 +12,11 @@ def json_to_df(data):
     """
     return pd.read_json(data)
 
+
+def csv_to_df(data):
+    return pd.read_csv(data)
+
+
 def df_to_json(data):
     """ 
         Converts a pandas dataframe to json
@@ -21,6 +26,4 @@ def df_to_json(data):
             {json}
     """
     return data.to_json()
-
-
 
