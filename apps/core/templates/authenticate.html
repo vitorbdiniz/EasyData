@@ -22,7 +22,7 @@
                             <h3 class="panel-title text-center" style="font-weight: bold">EasyData</h3>
                         </div>
                         <div class="panel-body">
-                            <form method='post' action='/login'>
+                            <form method='post' action='/authenticate'>
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Nome ou email" name="nome_ou_email" type="email" required>
@@ -35,12 +35,12 @@
                                         <input name="remember" type="checkbox" value="Remember Me"> Remember Me
                                     </label>
                                 </div>
-                                <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
+                                <div>
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                                </div>
                             </fieldset>
                             </form>
-                                <hr/>
-                            <center><h4>Or</h4></center>
-                            <a href='/signup' class="btn btn-lg btn-warning btn-block">Sign up</a>
+                            <center><a class="btn btn-lg btn-outline-primary btn-block" href="/register">Sign up</a></center>
                         </div>
                     </div>
                 </div>
