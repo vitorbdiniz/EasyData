@@ -98,11 +98,11 @@ def outliers_df(data,q = 0.25, m = 1.5, dropinf=True, dropna=True):
         data = remove_inf(data)
     for col in data:
         out += outliers(data[col], q=q, m=m, dropinf=False, dropna=False)
-    return data.drop(index=ibov.index[out])
+    return data.drop(index=data.index[out])
 
 
 def get_quant_var(df):
-    return [col for col in df if pd.api.types.is_numeric_dtype(ibov[col])]
+    return [col for col in df if pd.api.types.is_numeric_dtype(df[col])]
 def get_quali_var(df):
     return [col for col in df if col not in get_quant_var(df)]
 
