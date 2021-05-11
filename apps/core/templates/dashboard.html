@@ -1,0 +1,141 @@
+<head>
+    <meta charset="UTF-8">
+    <title>EasyData</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+
+
+    <style>
+        body{
+            padding: 20px 0px 0px 0px;
+        }
+    </style>
+</head>
+<div class="container">
+
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <a class="navbar-brand" href="#">Logout</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="row" style="margin-top:50px">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center" style="font-weight: bold">EasyData</h3>
+                </div>
+                <div class="panel-body">
+
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Estatísticas</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Enviar Planilha</button>
+                        </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <p>Você ainda não tem nenhuma planilha para análise.</p>
+                                
+                                <p>Escolha qual planilha você deseja estudar:</p>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Dropdown button
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <p>Quais estatísticas deseja calcular?</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="mean" value="option1">
+                                        <label class="form-check-label" for="mean">Média</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="median" value="option2">
+                                        <label class="form-check-label" for="median">Mediana</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="mode" value="option2">
+                                        <label class="form-check-label" for="mode">Moda</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="variance" value="option2">
+                                        <label class="form-check-label" for="variance">Variância</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="stdesviation" value="option2">
+                                        <label class="form-check-label" for="stdesviation">Desvio padrão</label>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p>Qual gráfico deseja exibir?</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="graphs" type="radio" id="boxplot" value="option1" checked>
+                                        <label class="form-check-label" for="boxplot">Boxplot</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="graphs" type="radio" id="histogram" value="option2">
+                                        <label class="form-check-label" for="histogram">Histograma</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="graphs" type="radio" id="dispersion" value="option2">
+                                        <label class="form-check-label" for="dispersion">Dispersão</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="graphs" type="radio" id="heatmap" value="option2">
+                                        <label class="form-check-label" for="heatmap">Heatmap</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <form method='post' action='/file-upload' enctype="multipart/form-data">
+                                    <fieldset>
+                                        <div class="form-group" id="nome_upload">
+                                            <label for="">Nome:</label>
+                                            <input class="form-control" placeholder="Insert a title" name="name" type="text" maxlength="100" required>
+                                        </div>
+                                        <div class="form-group" id="upload">
+                                            <label for="file">File:</label>
+                                            <input class="form-control" id="file" name="file" type="file" required>
+                                        </div>
+                                            
+                                        <button class="btn btn-md btn-primary" type="submit">Upload</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
