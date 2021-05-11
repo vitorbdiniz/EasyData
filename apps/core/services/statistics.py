@@ -44,12 +44,28 @@ def quantile(data, q):
     """
 
     """    
-    data_df = pd.DataFrame(data)
+    data_df = data[get_quant_var(data)]
+    data_df.dropna(inplace=True)
     if data_df.shape[1] > 0:
         quantiles = [np.quantile(data_df[col], q=q) for col in data_df.columns]
     else:
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
     return pd.Series(quantiles, index=data_df.columns)
+
+
+def get_quant_var(df):
+    return [col for col in df if pd.api.types.is_numeric_dtype(df[col])]
+
+
+def get_quali_var(df):
+    return [col for col in df if col not in get_quant_var(df)]
+
+
+def remove_inf(df):
+    if type(df) is pd.DataFrame:
+        return df[~df.isin([np.nan, np.inf, -np.inf]).any(1)]
+    else:
+        return df[~df.isin([np.nan, np.inf, -np.inf])]
 
 
 def variance(data):
@@ -74,19 +90,40 @@ def standard_deviation(data):
         raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
     return std
 
-def outliers(data,q = 0.25, m = 1.5):
+def outliers(data,q = 0.25, m = 1.5, dropinf=True, dropna=True):
     """
         q: {float} quantile
         m: {float} multiplier
         Returns an array which contains the outliers row-indexes
     """
-    outlier_lines = []
+
+    if dropinf:
+        data = remove_inf(data)
+    if dropna:
+        data = data.dropna()
+
+    std = data.std(skipna=True)
     sup = np.quantile(data, q=1-q)
     inf = np.quantile(data, q=q)
-    sup += st.stdev(data)*m
-    inf -= st.stdev(data)*m
-    for i in range(len(data)):
-        if data[i] > sup or data[i] < inf:
-            outlier_lines.append(i)
+    
+    sup += std*m
+    inf -= std*m
+    outlier_lines = [i for i in range(len(data)) if data[i] > sup or data[i] < inf]
+            
     return outlier_lines
 
+def outliers_df(data,q = 0.25, m = 1.5, dropinf=True, dropna=True):
+    out = []
+    if dropna:
+        data = data.dropna()
+    if dropinf:
+        data = remove_inf(data)
+    for col in data:
+        out += outliers(data[col], q=q, m=m, dropinf=False, dropna=False)
+    return data.drop(index=data.index[out])
+
+def remove_inf(df):
+    if type(df) is pd.DataFrame:
+        return df[~df.isin([np.nan, np.inf, -np.inf]).any(1)]
+    else:
+        return df[~df.isin([np.nan, np.inf, -np.inf])]

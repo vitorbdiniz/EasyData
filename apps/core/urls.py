@@ -1,7 +1,8 @@
 from django.urls import path
-from apps.core.views import StatisticsCsv, StatisticsCalculate
+from apps.core.views import upload, dashboard, statistics
 
 urlpatterns = [
-    path('statistics', StatisticsCsv.as_view(), name='statistics-csv'),
-    path('statistics/<int:csv_id>', StatisticsCalculate.as_view(), name='statistics'),
+    path('', dashboard, name='dashboard'),
+    path('upload/', upload, name='upload'),
+    path('statistics/', statistics, name='statistics'),
 ]
