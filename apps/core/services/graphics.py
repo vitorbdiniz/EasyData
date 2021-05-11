@@ -1,3 +1,4 @@
+from EasyData.apps.core.services.statistics import *
 import pandas as pd
 import numpy as np
 import statistics as st
@@ -8,8 +9,6 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 
-
-from apps.core.services.statistics import *
 
 
 def boxplot_comparando_outliers(df:pd.DataFrame):
