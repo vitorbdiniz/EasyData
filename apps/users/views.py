@@ -1,25 +1,25 @@
-from rest_framework import status, viewsets
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
-from .serializers import RegisterSerializer, AuthenticateSerializer
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
+from .models import *
+from .forms import *
 
-class Register(APIView):
+def register_page(request):
+    form = CreateUserForm()
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + username)
+            return redirect('login')
 
-    def post(self, request):
-        file_serializer = RegisterSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_200_OK)
-        return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class Authenticate(APIView):
-
-    def post(self, request):
-        file_serializer = AuthenticateSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_200_OK)
-        return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    context = {'form': form}
+    return render(request, 'register.html', context)
