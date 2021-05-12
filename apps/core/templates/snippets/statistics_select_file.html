@@ -5,11 +5,11 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         {% for filename in files %}
-            <li><a class="dropdown-item" href="#">{{ filename }}</a></li>
+            <li><a class="dropdown-item" href="statistics/{{ filename.id}}">{{ filename }}</a></li>
         {% endfor %}
     </ul>
 
-    <h4>Médias</h4>
+    {% comment %} <h4>Médias</h4>
     {% for name, value in mean.items %}
         <li>{{ name }}: {{ value }}</li>
     {% endfor %}
@@ -24,7 +24,7 @@
         <li>{{ name }}: {{ value }}</li>
     {% endfor %} {% endcomment %}
 
-    <h4>Variância</h4>
+    {% comment %} <h4>Variância</h4>
     {% for name, value in variance.items %}
         <li>{{ name }}: {{ value }}</li>
     {% endfor %}
@@ -60,8 +60,8 @@
         <div class="col-12">
             <button class="btn btn-primary" type="submit">Submit form</button>
         </div>
-    </form>
+    </form> {% endcomment %}
 
 
-    {% autoescape off %}{{ scatter }}{% endautoescape %}
+    {% comment %} {% autoescape off %}{{ scatter }}{% endautoescape %} {% endcomment %}
 </div>

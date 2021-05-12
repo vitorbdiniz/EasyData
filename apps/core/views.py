@@ -14,10 +14,34 @@ from apps.core.services.graphics import *
 @login_required(login_url='login')
 def dashboard(request):
     arquivos = CsvFile.objects.filter(user=request.user)
-
-    arquivo0 = arquivos[3].file
+    # arquivo0 = arquivos[3].file
     # print(arquivo0)
-    dataframe = data_conversion.csv_to_df(arquivo0)
+
+    if request.method == "POST":
+        colunas_enviadas = request.POST.dict()
+        arquivo = colunas_enviadas['arquivo']
+    else:
+        arquivo = None
+
+    context = {
+        'form': UploadCsvForm(),
+        'files': arquivos,
+    }
+    return render(request, 'dashboard.html', context)
+
+@login_required(login_url='login')
+def statistics(request, file_id):
+    arquivo = CsvFile.objects.get(user=request.user, id=file_id)
+    dataframe = data_conversion.csv_to_df(arquivo.file)
+
+    if request.method == "POST":
+        colunas_enviadas = request.POST.dict()
+        coluna1 = colunas_enviadas['coluna1']
+        coluna2 = colunas_enviadas['coluna2']
+    else:
+        coluna1 = list(dataframe.columns)[0]
+        coluna2 = list(dataframe.columns)[1]
+    
     # print(dir(statistics))
     # stats = outliers_df(csv)
 
@@ -32,19 +56,10 @@ def dashboard(request):
     heatmap = correlation_heatmap(dataframe).to_html()
 
     colunas = list(dataframe.columns)
-
-    if request.method == "POST":
-        colunas_enviadas = request.POST.dict()
-        coluna1 = colunas_enviadas['coluna1']
-        coluna2 = colunas_enviadas['coluna2']
-    else:
-        coluna1 = list(dataframe.columns)[0]
-        coluna2 = list(dataframe.columns)[1]
     scatter = scatter_plot(dataframe, coluna1, coluna2).to_html()
 
     context = {
         'form': UploadCsvForm(),
-        'files': arquivos,
         'boxplot': boxplot,
         'histogram': histogram,
         'heatmap': heatmap,
@@ -57,7 +72,7 @@ def dashboard(request):
         'columns': colunas,
 
     }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'statistics.html', context)
 
 @login_required(login_url='login')
 def upload(request):
@@ -71,7 +86,3 @@ def upload(request):
     else:
         context = {'form': UploadCsvForm()}
         return render(request, 'upload.html', context)
-
-@login_required(login_url='login')
-def statistics(request):
-    return render(request, 'statistics.html')
