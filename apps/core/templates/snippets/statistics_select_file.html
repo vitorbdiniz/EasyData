@@ -8,4 +8,60 @@
             <li><a class="dropdown-item" href="#">{{ filename }}</a></li>
         {% endfor %}
     </ul>
+
+    <h4>Médias</h4>
+    {% for name, value in mean.items %}
+        <li>{{ name }}: {{ value }}</li>
+    {% endfor %}
+
+    <h4>Mediana</h4>
+    {% for name, value in median.items %}
+        <li>{{ name }}: {{ value }}</li>
+    {% endfor %}
+
+    {% comment %} <h4>Moda</h4>
+    {% for name, value in mode.items %}
+        <li>{{ name }}: {{ value }}</li>
+    {% endfor %} {% endcomment %}
+
+    <h4>Variância</h4>
+    {% for name, value in variance.items %}
+        <li>{{ name }}: {{ value }}</li>
+    {% endfor %}
+
+    <h4>Desvio Padrão</h4>
+    {% for name, value in std.items %}
+        <li>{{ name }}: {{ value }}</li>
+    {% endfor %}
+
+    {% autoescape off %}{{ boxplot }}{% endautoescape %}
+    {% autoescape off %}{{ histogram }}{% endautoescape %}
+    {% autoescape off %}{{ heatmap }}{% endautoescape %}
+
+    <form method='post' action="." class="row g-3">        
+        {% csrf_token %}
+        <div class="col-md-3">
+            <label for="coluna1" class="form-label">Coluna 1</label>
+            <select class="form-select" name="coluna1" required>
+            {% for coluna in columns %}
+                <option name="coluna1" value="{{ coluna }}">{{ coluna }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="coluna2" class="form-label">Coluna 2</label>
+            <select class="form-select" name="coluna2" required>
+            {% for colunas in columns %}
+                <option name="coluna2" value="{{ colunas }}">{{ colunas }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        {{ columns.errors }}
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+    </form>
+
+
+    {% autoescape off %}{{ scatter }}{% endautoescape %}
 </div>

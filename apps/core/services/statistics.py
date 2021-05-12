@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import statistics as st
+# import statistics as st
 
 
 def mean(data):
@@ -96,7 +96,6 @@ def outliers(data,q = 0.25, m = 1.5, dropinf=True, dropna=True):
         m: {float} multiplier
         Returns an array which contains the outliers row-indexes
     """
-
     if dropinf:
         data = remove_inf(data)
     if dropna:
@@ -118,6 +117,8 @@ def outliers_df(data,q = 0.25, m = 1.5, dropinf=True, dropna=True):
         data = data.dropna()
     if dropinf:
         data = remove_inf(data)
+    data = data[get_quant_var(data)]
+
     for col in data:
         out += outliers(data[col], q=q, m=m, dropinf=False, dropna=False)
     return data.drop(index=data.index[out])
