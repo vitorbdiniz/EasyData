@@ -25,6 +25,10 @@
                 required>
                 {{ form.file.errors }}
         </div>
+        <p>
+            Note que o arquivo enviado deve ser do tipo ".csv" e suas colunas devem ser separadas por vírgulas.
+            <br><strong>Os arquivos enviados expiram após cada sessão!</strong>
+        </p>
         {{ form.errors }}            
         <button class="btn btn-md btn-primary" type="submit">Upload</button>
     </form>
