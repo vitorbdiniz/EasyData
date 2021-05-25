@@ -11,12 +11,13 @@ def get_dataframe_columns_as_dictionary(dataframe):
     dictionary = dict(dataframe.dtypes)
     return dictionary
 
-def get_data_type_of_column(dataframe, column):
+def get_data_type_of_column(dtypes, column):
     '''
+    dtypes is a dictionary
     Column example: 'Age'
     '''
-    dataTypeObj = dataframe.dtypes[column]
-    return dataTypeObj
+    dataTypeDict = dtypes[column]
+    return dataTypeDict
 
 # Check the type of column is int64
 def is_column_int(dataframe, column):
@@ -26,14 +27,14 @@ def is_column_int(dataframe, column):
     return get_data_type_of_column(dataframe, column) == np.int64
 
 # Check the type of column is Object (string)
-'''
+    '''
     Column example: 'Age'
     '''
 def is_column_string(dataframe, column):
     return get_data_type_of_column(dataframe, column) == np.object
 
 # Check the type of column is Float64
-'''
+    '''
     Column example: 'Age'
     '''
 def is_column_float(dataframe, column):
