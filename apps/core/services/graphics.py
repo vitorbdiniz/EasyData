@@ -115,7 +115,12 @@ def correlation_heatmap(df:pd.DataFrame, removeDuplicates = False, method='pears
 
 
 def scatter_plot(df, col1, col2, remove_outliers=False):
-    df = df[[col1, col2]]
+    s1 = ibov[col1]
+    s2 = ibov[col2]
+
+    if col1==col2:
+        col2 += ' '
+    df = pd.DataFrame({col1:s1, col2:s2})
     if remove_outliers:
         df = outliers_df(df)
     plot = px.scatter(df, x=col1, y=col2, title=f'Dispersão: {col1} X {col2}')
