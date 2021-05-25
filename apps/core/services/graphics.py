@@ -115,8 +115,8 @@ def correlation_heatmap(df:pd.DataFrame, removeDuplicates = False, method='pears
 
 
 def scatter_plot(df, col1, col2, remove_outliers=False):
-    s1 = ibov[col1]
-    s2 = ibov[col2]
+    s1 = df[col1]
+    s2 = df[col2]
 
     if col1==col2:
         col2 += ' '
