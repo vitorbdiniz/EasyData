@@ -33,6 +33,9 @@ def dashboard(request):
 def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
     dataframe = data_conversion.csv_to_df(arquivo.file)
+    if type(dataframe) == str:
+        context = {'form': UploadCsvForm()}
+        return render(request, 'upload.html', context)
 
     if request.method == "POST":
         colunas_enviadas = request.POST.dict()
