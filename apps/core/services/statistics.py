@@ -10,7 +10,7 @@ def mean(data):
         else:
             avg = None
     except:
-        med = pd.Series([None for col in data_df.columns], index=data_df.columns)
+        avg = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return avg
 
 
@@ -46,7 +46,7 @@ def mode(data):
         else:
             moda = 'Não há moda na amostra'
         mo[col] = moda
-    return mo    
+    return mo
 
 def quantile(data, q):
     data_df = data[get_quant_var(data)]
