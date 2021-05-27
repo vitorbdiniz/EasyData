@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-# import statistics as st
-
 
 def mean(data):
     """
@@ -9,10 +7,13 @@ def mean(data):
 
     """
     data_df = pd.DataFrame(data)
-    if data_df.shape[1] > 0:
-        avg = data.mean()
-    else:
-        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    try:
+        if data_df.shape[1] > 0:
+            avg = data.mean()
+        else:
+            avg = None
+    except:
+        med = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return avg
 
 
@@ -22,10 +23,13 @@ def median(data):
 
     """
     data_df = pd.DataFrame(data)
-    if data_df.shape[1] > 0:
-        med = data.median()
-    else:
-        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    try:
+        if data_df.shape[1] > 0:
+            med = data.median()
+        else:
+            med = None
+    except:
+        med = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return med
 
 def mode(data):
@@ -34,10 +38,15 @@ def mode(data):
 
     """
     data_df = pd.DataFrame(data)
-    if data_df.shape[1] > 0:
-        mo = data.mode()
-    else:
-        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+
+    try:
+        if data_df.shape[1] > 0:
+            mo = data.mode()
+        else:
+            mo = 'Não há moda na amostra'
+    except:
+        mo = 'Não há moda na amostra'
+
     return mo    
 
 def quantile(data, q):
@@ -49,7 +58,7 @@ def quantile(data, q):
     if data_df.shape[1] > 0:
         quantiles = [np.quantile(data_df[col], q=q) for col in data_df.columns]
     else:
-        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+        quantiles = []
     return pd.Series(quantiles, index=data_df.columns)
 
 
@@ -73,10 +82,13 @@ def variance(data):
 
     """    
     data_df = pd.DataFrame(data)
-    if data_df.shape[1] > 0:
-        var = data_df.var()
-    else:
-        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    try:
+        if data_df.shape[1] > 0:
+            var = data_df.var()
+        else:
+            var = None
+    except:
+        var = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return var
 
 def standard_deviation(data):
@@ -84,10 +96,13 @@ def standard_deviation(data):
 
     """    
     data_df = pd.DataFrame(data)
-    if data_df.shape[1] > 0:
-        std = data_df.std()
-    else:
-        raise ValueError(f"Empty data received. data should have shape (1,1) or higher and it has {data_df.shape}")
+    try:
+        if data_df.shape[1] > 0:
+            std = data_df.std()
+        else:
+            std = None
+    except:
+        std = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return std
 
 def outliers(data,q = 0.25, m = 1.5, dropinf=True, dropna=True):
