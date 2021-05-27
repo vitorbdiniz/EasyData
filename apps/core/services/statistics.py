@@ -2,11 +2,8 @@ import pandas as pd
 import numpy as np
 
 def mean(data):
-    """
-
-
-    """
     data_df = pd.DataFrame(data)
+    data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
             avg = data.mean()
@@ -18,11 +15,8 @@ def mean(data):
 
 
 def median(data):
-    """
-
-
-    """
     data_df = pd.DataFrame(data)
+    data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
             med = data.median()
@@ -33,26 +27,28 @@ def median(data):
     return med
 
 def mode(data):
-    """
-
-
-    """
     data_df = pd.DataFrame(data)
-
-    try:
-        if data_df.shape[1] > 0:
-            mo = data.mode()
+    data_df = data[get_quant_var(data_df)]
+    mo = dict()
+    for col in data_df.columns:
+        serie = data_df[col].dropna()
+        if serie.shape[0] > 0:
+            try:
+                moda = serie.mode()
+                if moda.shape[0] == 1:
+                    moda = moda.iloc[0]
+                elif moda.shape[0] > 1 and moda.shape[0] < serie.shape[0]:
+                    moda = moda.tolist()
+                else:
+                    moda = 'Não há moda na amostra'    
+            except:
+                moda = 'Não há moda na amostra'
         else:
-            mo = 'Não há moda na amostra'
-    except:
-        mo = 'Não há moda na amostra'
-
+            moda = 'Não há moda na amostra'
+        mo[col] = moda
     return mo    
 
 def quantile(data, q):
-    """
-
-    """    
     data_df = data[get_quant_var(data)]
     data_df.dropna(inplace=True)
     if data_df.shape[1] > 0:
@@ -82,6 +78,7 @@ def variance(data):
 
     """    
     data_df = pd.DataFrame(data)
+    data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
             var = data_df.var()
@@ -96,6 +93,7 @@ def standard_deviation(data):
 
     """    
     data_df = pd.DataFrame(data)
+    data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
             std = data_df.std()
