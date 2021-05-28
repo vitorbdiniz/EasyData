@@ -133,6 +133,10 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# config number format
+THOUSAND_SEPARATOR=','
+USE_THOUSAND_SEPARATOR=True
+
 
 # Config heroku to Django
 django_heroku.settings(locals())

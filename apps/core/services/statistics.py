@@ -3,10 +3,11 @@ import numpy as np
 
 def mean(data):
     data_df = pd.DataFrame(data)
+    print('data_df', data_df)
     data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
-            avg = data.mean()
+            avg = data.mean(skipna=True)
         else:
             avg = None
     except:

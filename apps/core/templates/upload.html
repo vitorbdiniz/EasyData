@@ -29,10 +29,10 @@
             <strong>Ao fazer upload, tenha certeza que o arquivo obedece as seguintes especificações:</strong>
         </p>
         <ul>
-            <li>O arquivo enviado deve ser do tipo ".csv" e suas colunas devem ser separadas por vírgulas.</li>
+            <li>O arquivo enviado deve ser do tipo ".csv" e suas colunas devem ser separadas por vírgulas, caso contrário o sistema não reconhecerá a coluna.</li>
             <li>Todas as colunas do arquivo devem começar na linha um.</li>
             <li>A primeira linha do arquivo deve conter os nomes das colunas presentes.</li>
-            <li>Todas as colunas, com excessão do nome, devem ser numéricas, garantindo que as estatísticas sejam calculadas corretamente.</li>
+            <li>Colunas não numéricas serão ignoradas no cálculo de estatísticas.</li>
             <li>Não devem existir na planilha dados incoerentes e que não façam parte do conjunto de dados a ser analisado.</li>
         </ul>
         {{ form.errors }}            
