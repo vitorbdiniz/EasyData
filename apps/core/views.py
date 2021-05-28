@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_list_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -16,7 +16,7 @@ from apps.core.services.graphics import *
 def dashboard(request):
     import datetime
     from django.utils.timezone import now
-    one_hour_ago = now() + datetime.timedelta(minutes=-1200)
+    one_hour_ago = now() + datetime.timedelta(minutes=-720)
     arquivos = CsvFile.objects.filter(user=request.user, created_at__gte=one_hour_ago)
 
     context = {
@@ -30,63 +30,41 @@ def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
     dataframe = data_conversion.csv_to_df(arquivo.file, sep=";")
 
-    if request.method == "POST":
-        colunas_enviadas = request.POST.dict()
-        arquivo = colunas_enviadas['arquivo']
-    else:
-        arquivo = None
-
-    if request.method == "POST":
-        colunas_enviadas = request.POST.dict()
-        coluna1 = colunas_enviadas['coluna1']
-        coluna2 = colunas_enviadas['coluna2']
-    else:
-        print(list(dataframe.columns))
-        coluna1 = list(dataframe.columns)[0]
-        coluna2 = list(dataframe.columns)[1]
-    
-    # print(dir(statistics))
-    # stats = outliers_df(csv)
-    print(dataframe)
-
     media = mean(dataframe)
     mediana = median(dataframe)
     moda = mode(dataframe)
     variancia = variance(dataframe)
     desvio = standard_deviation(dataframe)
-    
-    boxplot = boxplot_completo(dataframe).to_html()
-    histogram = histograma_completo(dataframe).to_html()
-    heatmap = correlation_heatmap(dataframe).to_html()
 
     cabecalhos = dataframe.select_dtypes(include=np.number).columns.tolist()
-    # print(dataframe.columns)
-    # cabecalhos = get_quant_var(dataframe.columns)
-    # print(cabecalhos)
     colunas = list(dataframe.columns)
-    scatter = scatter_plot(dataframe, coluna1, coluna2).to_html()
-
-
-    print(request.GET)
-    print('---- OUT')
+    
     elements = request.GET.getlist('statistics_names')
     if not elements:
         elements = cabecalhos
-    a = dataframe.columns.intersection(elements)
-    print(a)
-    data = dataframe[dataframe.columns.intersection(a)]
-    print(data)
-    boxplot = boxplot_completo(data).to_html()
+    dataframe_sliced = dataframe.columns.intersection(elements)
+    new_dataframe = dataframe[dataframe.columns.intersection(dataframe_sliced)]
 
+    graph = request.GET.getlist('graphs')
+    graph_render = None
+    if len(graph) > 0:
+        if graph[0] == 'boxplot':
+            graph_render = boxplot_completo(new_dataframe).to_html()
+        elif graph[0] == 'histogram':
+            graph_render = histograma_completo(new_dataframe).to_html()
+        elif graph[0] == 'heatmap':
+            graph_render = correlation_heatmap(new_dataframe).to_html()
+        elif graph[0] == 'scatter':
+            if len(new_dataframe.columns) != 2:
+                messages.error(request, "Para gráficos de dispersão é necessário informar 2 campos!")
+                return HttpResponseRedirect('.')
+            graph_render = scatter_plot(new_dataframe, new_dataframe.columns[0], new_dataframe.columns[1]).to_html()
 
     # moda = {'CountryID': 'Não há moda na amostra', '2021 Score': [5650000.0, 58180.0], 'Property Rights': 4610000.0, 'Judical Effectiveness': 2820000.0}
 
     context = {
         'form': UploadCsvForm(),
-        'boxplot': boxplot,
-        'histogram': histogram,
-        'heatmap': heatmap,
-        'scatter': scatter,
+        'graph': graph_render,
         'mean': list(media),
         'median': list(mediana),
         'mode': dict(moda),
