@@ -18,7 +18,7 @@ def csv_to_df(data, sep=',', tipo='csv'):
     try:
         if tipo =='csv':
             if sep is None:
-                sep = detect(data.readline())
+                sep = detect(data.readline(), default=',')
             result = pd.read_csv(data, sep=sep)
         else:
             result = pd.read_excel(data)
