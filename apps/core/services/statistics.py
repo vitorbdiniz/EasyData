@@ -9,7 +9,7 @@ def mean(data):
         if data_df.shape[1] > 0:
             avg = data.mean(skipna=True)
         else:
-            avg = None
+            avg = [None]
     except:
         avg = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return avg
@@ -22,7 +22,7 @@ def median(data):
         if data_df.shape[1] > 0:
             med = data.median()
         else:
-            med = None
+            med = [None]
     except:
         med = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return med
@@ -84,7 +84,7 @@ def variance(data):
         if data_df.shape[1] > 0:
             var = data_df.var()
         else:
-            var = None
+            var = [None]
     except:
         var = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return var
@@ -99,7 +99,7 @@ def standard_deviation(data):
         if data_df.shape[1] > 0:
             std = data_df.std()
         else:
-            std = None
+            std = [None]
     except:
         std = pd.Series([None for col in data_df.columns], index=data_df.columns)
     return std
