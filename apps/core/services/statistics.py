@@ -41,7 +41,7 @@ def mode(data):
                 elif moda.shape[0] > 1 and moda.shape[0] < serie.shape[0]:
                     moda = moda.tolist()
                 else:
-                    moda = 'Não há moda na amostra'    
+                    moda = 'Não há moda na amostra'
             except:
                 moda = 'Não há moda na amostra'
         else:
