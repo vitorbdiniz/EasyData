@@ -28,8 +28,8 @@ def dashboard(request):
 @login_required(login_url='login')
 def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
-    dataframe = data_conversion.csv_to_df(arquivo.file, sep=",")
-
+    dataframe = data_conversion.csv_to_df(arquivo.file, sep=None)
+    
     media = mean(dataframe)
     mediana = median(dataframe)
     moda = mode(dataframe)
