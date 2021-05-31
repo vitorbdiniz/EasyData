@@ -10,7 +10,6 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 
-
 def boxplot_comparando_outliers(df:pd.DataFrame):
     plot = make_subplots(rows=2, cols=df.shape[1], subplot_titles=df.columns.tolist()*2)
     plot.update_layout(title={'text': "Boxplots",'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
@@ -32,7 +31,7 @@ def boxplot_dados_originais(df:pd.DataFrame):
     ncols = df.shape[1] if df.shape[1] <= 5 else 5
 
     plot = make_subplots(rows=nrows, cols=ncols, subplot_titles=df.columns)
-    plot.update_layout(title={'text': "Boxplots",'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
+    plot.update_layout(title={'text': "Boxplots",'x':0.5,'xanchor': 'center','yanchor': 'top'})
     
     i,j=1,1
     for col in df:
@@ -77,7 +76,7 @@ def histograma_dados_originais(df:pd.DataFrame):
     ncols = df.shape[1] if df.shape[1] <= 5 else 5
 
     plot = make_subplots(rows=nrows, cols=ncols, subplot_titles=df.columns)
-    plot.update_layout(title={'text': "Histogramas",'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
+    plot.update_layout(title={'text': "Histogramas",'x':0.5,'xanchor': 'center','yanchor': 'top'})
     
     i,j=1,1
     for col in df:

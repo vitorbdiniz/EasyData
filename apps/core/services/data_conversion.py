@@ -1,5 +1,5 @@
 import pandas as pd
-
+from detect_delimiter import detect
 
 def json_to_df(data):
     """ 
@@ -13,10 +13,18 @@ def json_to_df(data):
     return pd.read_json(data)
 
 
-def csv_to_df(data, sep=',', tipo='csv'):
+def csv_to_df(data, sep=None, tipo='csv'):
     try:
         if tipo =='csv':
-            result = pd.read_csv(data, sep=sep)
+            if sep is None:
+                sep = detect(data.readline().decode("utf-8"), default=',')
+            data.seek(0)
+            if data.readline().decode("utf-8")[0] == sep:
+                data.seek(0)
+                result = pd.read_csv(data, sep=sep, index_col=0)
+            else:
+                data.seek(0)
+                result = pd.read_csv(data, sep=sep)
         else:
             result = pd.read_excel(data)
     except:

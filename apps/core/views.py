@@ -19,6 +19,17 @@ def dashboard(request):
     one_hour_ago = now() + datetime.timedelta(minutes=-720)
     arquivos = CsvFile.objects.filter(user=request.user, created_at__gte=one_hour_ago)
 
+    for i in arquivos:
+        try:
+            # tenta abrir para ver se está dentro do filesystem do Heroku
+            open(i.file.path)
+        except:
+            # se tiver sido apagado, retira da queryset
+            i.delete()
+
+    # refaz a queryset com os arquivos apagados
+    arquivos = CsvFile.objects.filter(user=request.user, created_at__gte=one_hour_ago)
+
     context = {
         'form': UploadCsvForm(),
         'files': arquivos,
@@ -28,7 +39,10 @@ def dashboard(request):
 @login_required(login_url='login')
 def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
-    dataframe = data_conversion.csv_to_df(arquivo.file, sep=";")
+    dataframe = data_conversion.csv_to_df(arquivo.file)
+
+    print(dataframe)
+    print(dataframe.empty)
 
     media = mean(dataframe)
     mediana = median(dataframe)
@@ -37,7 +51,10 @@ def statistics(request, file_id):
     desvio = standard_deviation(dataframe)
 
     cabecalhos = dataframe.select_dtypes(include=np.number).columns.tolist()
+    # cabecalhos = get_quant_var(dataframe)
     colunas = list(dataframe.columns)
+
+    # get_quant_var(df)
     
     elements = request.GET.getlist('statistics_names')
     if not elements:
@@ -48,12 +65,19 @@ def statistics(request, file_id):
     graph = request.GET.getlist('graphs')
     graph_render = None
     if len(graph) > 0:
+        from math import ceil
+        height = ceil(len(new_dataframe.columns)/5)
+        height = 400 * height
+
         if graph[0] == 'boxplot':
-            graph_render = boxplot_completo(new_dataframe).to_html()
+            try:
+                graph_render = boxplot_completo(new_dataframe).to_html(default_height=height)
+            except:
+                print("ERRO")
         elif graph[0] == 'histogram':
-            graph_render = histograma_completo(new_dataframe).to_html()
+            graph_render = histograma_completo(new_dataframe).to_html(default_height=height)
         elif graph[0] == 'heatmap':
-            graph_render = correlation_heatmap(new_dataframe).to_html()
+            graph_render = correlation_heatmap(new_dataframe).to_html(default_height=height)
         elif graph[0] == 'scatter':
             if len(new_dataframe.columns) != 2:
                 messages.error(request, "Para gráficos de dispersão é necessário informar 2 campos!")
@@ -78,6 +102,21 @@ def statistics(request, file_id):
 @login_required(login_url='login')
 def upload(request):
     if request.method == "POST":
+
+        try:
+            dataframe = data_conversion.csv_to_df(request.FILES['file'])
+        except:
+            messages.error(request, "Erro inesperado! Verifique o tipo do arquivo e siga as instruções abaixo.")
+            return HttpResponseRedirect('/upload')
+
+        if np.nan in dataframe.index:
+            messages.error(request, "Índices vazios. Envie um arquivo válido!")
+            return HttpResponseRedirect('/upload')
+
+        if dataframe.empty:
+            messages.error(request, "Arquivo vazio. Envie um arquivo válido!")
+            return HttpResponseRedirect('/upload')
+
         CsvFile.objects.create(
             user=request.user,
             name=request.POST.get('name'),
