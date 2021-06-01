@@ -58,8 +58,21 @@ def quartile(data):
             0.75 : quantile(data, 0.75)
         }
     '''
-    quartiles = {q:quantile(data, q) for q in [0.25, 0.5, 0.75] }
+    cols = get_quant_var(data)
+    quartiles = dict()
+    for c in cols:
+        quartis = [quantile_series(data[c], q) for q in [0.25, 0.5, 0.75]]
+        quartiles[c] = quartis
     return quartiles
+
+def quantile_series(series, q):
+    series.dropna(inplace=True)
+    if series.shape[1] > 0:
+        quant = np.quantile(series, q=q)
+    else:
+        quant = None
+    return quant
+
 
 def quantile(data, q):
     data_df = data[get_quant_var(data)]
