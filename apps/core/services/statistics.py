@@ -49,6 +49,18 @@ def mode(data):
         mo[col] = moda
     return mo
 
+def quartile(data):
+    '''
+        Retorna dicionário de séries:
+        {
+            0.25 : quantile(data, 0.25), 
+            0.5  : quantile(data, 0.5),
+            0.75 : quantile(data, 0.75)
+        }
+    '''
+    quartiles = {q:quantile(data, q) for q in [0.25, 0.5, 0.75] }
+    return quartiles
+
 def quantile(data, q):
     data_df = data[get_quant_var(data)]
     data_df.dropna(inplace=True)
