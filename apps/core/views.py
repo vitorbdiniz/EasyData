@@ -49,6 +49,7 @@ def statistics(request, file_id):
     moda = mode(dataframe)
     variancia = variance(dataframe)
     desvio = standard_deviation(dataframe)
+    quartil = quartile(dataframe)
 
     cabecalhos = dataframe.select_dtypes(include=np.number).columns.tolist()
     # cabecalhos = get_quant_var(dataframe)
@@ -85,6 +86,8 @@ def statistics(request, file_id):
             graph_render = scatter_plot(new_dataframe, new_dataframe.columns[0], new_dataframe.columns[1]).to_html()
 
     # moda = {'CountryID': 'Não há moda na amostra', '2021 Score': [5650000.0, 58180.0], 'Property Rights': 4610000.0, 'Judical Effectiveness': 2820000.0}
+    print(quartil)
+    print(list(quartil))
 
     context = {
         'form': UploadCsvForm(),
@@ -92,6 +95,7 @@ def statistics(request, file_id):
         'mean': list(media),
         'median': list(mediana),
         'mode': dict(moda),
+        'quartil': dict(quartil),
         'variance': list(variancia),
         'std': list(desvio),
         'columns': colunas,

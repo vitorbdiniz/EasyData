@@ -37,15 +37,17 @@ def mode(data):
             try:
                 moda = serie.mode()
                 if moda.shape[0] == 1:
-                    moda = moda.iloc[0]
+                    moda = [round(moda.iloc[0], 2)]
                 elif moda.shape[0] > 1 and moda.shape[0] < serie.shape[0]:
                     moda = moda.tolist()
+                    for i in range(len(moda)):
+                        moda[i] = round(moda[i], 2)
                 else:
-                    moda = 'Não há moda na amostra'
+                    moda = ['Não há moda na amostra']
             except:
-                moda = 'Não há moda na amostra'
+                moda = ['Não há moda na amostra']
         else:
-            moda = 'Não há moda na amostra'
+            moda = ['Não há moda na amostra']
         mo[col] = moda
     return mo
 
@@ -67,7 +69,7 @@ def quartile(data):
 
 def quantile_series(series, q):
     series.dropna(inplace=True)
-    if series.shape[1] > 0:
+    if series.shape[0] > 0:
         quant = np.quantile(series, q=q)
     else:
         quant = None

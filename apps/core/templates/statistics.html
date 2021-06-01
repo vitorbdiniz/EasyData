@@ -43,7 +43,21 @@
     <tr>
         <th scope="row">Moda</th>
         {% for name, value in mode.items %}
-            <td>{{ value }}</td>
+            <td>
+            {% for mode_item in value %}
+                {{ mode_item }}<br>
+            {% endfor %}
+            </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <th scope="row">Quartis</th>
+        {% for name, value in quartil.items %}
+            <td>
+            {% for quartil_item in value %}
+                {{ quartil_item | floatformat:2}}<br>
+            {% endfor %}
+            </td>
         {% endfor %}
     </tr>
     <tr>
