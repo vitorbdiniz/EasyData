@@ -37,6 +37,15 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 @login_required(login_url='login')
+def user_config(request):
+
+    if request.method == "POST":
+        User.objects.get(id=request.user.id).delete()
+        return HttpResponseRedirect('/login')
+
+    return render(request, 'user_config.html')
+
+@login_required(login_url='login')
 def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
     tipo_arquivo = arquivo.file.name.split('.')[-1]
