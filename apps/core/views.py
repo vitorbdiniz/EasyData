@@ -39,7 +39,8 @@ def dashboard(request):
 @login_required(login_url='login')
 def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
-    dataframe = data_conversion.csv_to_df(arquivo.file)
+    tipo_arquivo = arquivo.file.name.split('.')[-1]
+    dataframe = data_conversion.csv_to_df(arquivo.file, tipo=tipo_arquivo)
 
     print(dataframe)
     print(dataframe.empty)
@@ -113,7 +114,8 @@ def upload(request):
     if request.method == "POST":
 
         try:
-            dataframe = data_conversion.csv_to_df(request.FILES['file'])
+            tipo_arquivo = request.FILES['file'].name.split('.')[-1]
+            dataframe = data_conversion.csv_to_df(request.FILES['file'], tipo=tipo_arquivo)
         except:
             messages.error(request, "Erro inesperado! Verifique o tipo do arquivo e siga as instruções abaixo.")
             return HttpResponseRedirect('/upload')
