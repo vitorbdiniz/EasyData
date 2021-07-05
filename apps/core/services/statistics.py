@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import statsmodels.api as sm
+from sklearn.linear_model import LinearRegression
 
 
 
@@ -92,19 +92,19 @@ def quantile(data, q):
 
 
 def linear_regression(df, target_variable, independent_variables=[]):
-    if len(independent_variables)==0:
-        independent_variables = list(df.columns)
     quantitative_variables = set(get_quant_var(df))
-    variables = [var for var in independent_variables if var in quantitative_variables]
+    if len(independent_variables)==0:
+        independent_variables = [var for var in list(df.columns) if var in quantitative_variables and var != target_variable]
+
     if target_variable not in quantitative_variables:
         return 'Variável alvo qualitativa'
-    if len(variables) == 0:
+    if len(independent_variables) == 0:
         return 'Apenas variáveis dependentes qualitativas selecionadas'
 
-    X = df[quantitative_variables]
-    X = sm.add_constant(X)
-    model = sm.OLS(y,X).fit()
+    y = df[target_variable]
+    X = df[independent_variables]
 
+    model = LinearRegression(n_jobs=-1, normalize=True).fit(X, y)
     return model
 
 

@@ -125,3 +125,45 @@ def scatter_plot(df, col1, col2, remove_outliers=False):
     plot = px.scatter(df, x=col1, y=col2, title=f'Dispersão: {col1} X {col2}')
 
     return plot
+
+
+
+
+def make_line(array, a, b):
+    return [a*x+b for x in array ]
+    
+def regression_plot(df:pd.DataFrame, target_var, independent_variables=[], dropna=True, dropinf=True):
+    quantitative_variables = set(get_quant_var(df))
+    df = df[quantitative_variables]
+
+    if len(independent_variables)==0:
+        independent_variables = list(df.columns)
+
+    independent_variables = [var for var in independent_variables if var in quantitative_variables and var != target_var]
+
+    if dropna:
+        df = df.dropna()
+    if dropinf:
+        df = remove_inf(df)
+
+    model = linear_regression(df, target_var, independent_variables)
+    if type(model) == str:
+        return model
+    params = { var: coef for var, coef in zip(independent_variables, model.coef_)}
+
+    nrows = 1 if len(independent_variables) <= 5 else int((len(independent_variables))/5) +1
+    ncols = (len(independent_variables)) if (len(independent_variables)) <= 5 else 5
+
+    plot = make_subplots(rows=nrows, cols=ncols, subplot_titles= [ coef for coef in independent_variables ] ) 
+    plot.update_layout(title={'text': "Gráfico de Dispersão + Regressão",'x':0.5,'xanchor': 'center','yanchor': 'top'})
+    
+    i,j=1,1
+    for p in independent_variables:
+        plot.add_trace(go.Scatter( x=df[p], y=df[target_var], mode='markers', name=f'{p} X {target_var}'  ), row=i, col=j )
+        plot.add_trace( go.Scatter(x=df[p], y = make_line(df[p], params[p], model.intercept_), name=f'Regressão: {p} X {target_var}' ), row=i, col=j )
+
+        j+=1
+        if j>ncols:
+            j=1
+            i+=1
+    return plot
