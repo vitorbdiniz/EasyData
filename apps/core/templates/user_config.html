@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="col-md-4 col-md-offset-4 panel-default" style="margin: 0 auto;">
+    <form method='POST' action='.'>
+    {% csrf_token %}
+    <fieldset>
+        <div class="form-check form-check-inline">
+            <label class="form-check-label" for="deletar">Deletar conta de usuário</label>
+            <input class="btn btn-md btn-primary btn-block" id="deletar"  type="submit" value="Deletar">
+        </div>        
+        <a class="btn btn-md btn-outline-primary btn-block" href="{% url 'dashboard' %}" >Voltar</a>
+    </fieldset>
+    </form>
+</div>
+
+
+{% endblock content %}
