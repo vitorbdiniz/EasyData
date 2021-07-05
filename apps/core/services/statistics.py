@@ -1,5 +1,9 @@
 import pandas as pd
 import numpy as np
+import statsmodels.api as sm
+
+
+
 
 def mean(data):
     data_df = pd.DataFrame(data)
@@ -84,6 +88,25 @@ def quantile(data, q):
     else:
         quantiles = []
     return pd.Series(quantiles, index=data_df.columns)
+
+
+
+def linear_regression(df, target_variable, independent_variables=[]):
+    if len(independent_variables)==0:
+        independent_variables = list(df.columns)
+    quantitative_variables = set(get_quant_var(df))
+    variables = [var for var in independent_variables if var in quantitative_variables]
+    if target_variable not in quantitative_variables:
+        return 'Variável alvo qualitativa'
+    if len(variables) == 0:
+        return 'Apenas variáveis dependentes qualitativas selecionadas'
+
+    X = df[quantitative_variables]
+    X = sm.add_constant(X)
+    model = sm.OLS(y,X).fit()
+
+    return model
+
 
 
 def get_quant_var(df):
