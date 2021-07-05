@@ -39,7 +39,8 @@ def dashboard(request):
 @login_required(login_url='login')
 def statistics(request, file_id):
     arquivo = CsvFile.objects.get(user=request.user, id=file_id)
-    dataframe = data_conversion.csv_to_df(arquivo.file)
+    tipo_arquivo = arquivo.file.name.split('.')[-1]
+    dataframe = data_conversion.csv_to_df(arquivo.file, tipo=tipo_arquivo)
 
     print(dataframe)
     print(dataframe.empty)
@@ -84,6 +85,11 @@ def statistics(request, file_id):
                 messages.error(request, "Para gráficos de dispersão é necessário informar 2 campos!")
                 return HttpResponseRedirect('.')
             graph_render = scatter_plot(new_dataframe, new_dataframe.columns[0], new_dataframe.columns[1]).to_html()
+        elif graph[0] == 'regression':
+            if len(new_dataframe.columns) != 2:
+                messages.error(request, "Para gráficos de regressão é necessário informar 2 campos!")
+                return HttpResponseRedirect('.')
+            graph_render = regression_plot(new_dataframe, new_dataframe.columns[0]).to_html(default_height=height)
 
     # moda = {'CountryID': 'Não há moda na amostra', '2021 Score': [5650000.0, 58180.0], 'Property Rights': 4610000.0, 'Judical Effectiveness': 2820000.0}
     print(quartil)
@@ -108,7 +114,8 @@ def upload(request):
     if request.method == "POST":
 
         try:
-            dataframe = data_conversion.csv_to_df(request.FILES['file'])
+            tipo_arquivo = request.FILES['file'].name.split('.')[-1]
+            dataframe = data_conversion.csv_to_df(request.FILES['file'], tipo=tipo_arquivo)
         except:
             messages.error(request, "Erro inesperado! Verifique o tipo do arquivo e siga as instruções abaixo.")
             return HttpResponseRedirect('/upload')

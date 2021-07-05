@@ -21,10 +21,10 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      {% for col in columns_num %}
-             <th scope="col">{{ col }}</th>
-    {% endfor %}
+        <th scope="col">#</th>
+        {% for col in columns_num %}
+            <th scope="col">{{ col }}</th>
+        {% endfor %}
     </tr>
   </thead>
   <tbody>
@@ -97,6 +97,10 @@
     <div class="form-check form-check-inline">
         <input class="form-check-input" name="graphs" type="radio" id="heatmap" value="heatmap">
         <label class="form-check-label" for="heatmap">Heatmap</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" name="graphs" type="radio" id="regression" value="regression">
+        <label class="form-check-label" for="regression">Regressão</label>
     </div>
 </div>
 

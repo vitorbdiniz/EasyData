@@ -1,5 +1,9 @@
 import pandas as pd
 import numpy as np
+from sklearn.linear_model import LinearRegression
+
+
+
 
 def mean(data):
     data_df = pd.DataFrame(data)
@@ -84,6 +88,25 @@ def quantile(data, q):
     else:
         quantiles = []
     return pd.Series(quantiles, index=data_df.columns)
+
+
+
+def linear_regression(df, target_variable, independent_variables=[]):
+    quantitative_variables = set(get_quant_var(df))
+    if len(independent_variables)==0:
+        independent_variables = [var for var in list(df.columns) if var in quantitative_variables and var != target_variable]
+
+    if target_variable not in quantitative_variables:
+        return 'Variável alvo qualitativa'
+    if len(independent_variables) == 0:
+        return 'Apenas variáveis dependentes qualitativas selecionadas'
+
+    y = df[target_variable]
+    X = df[independent_variables]
+
+    model = LinearRegression(n_jobs=-1, normalize=True).fit(X, y)
+    return model
+
 
 
 def get_quant_var(df):
