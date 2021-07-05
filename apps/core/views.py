@@ -84,6 +84,11 @@ def statistics(request, file_id):
                 messages.error(request, "Para gráficos de dispersão é necessário informar 2 campos!")
                 return HttpResponseRedirect('.')
             graph_render = scatter_plot(new_dataframe, new_dataframe.columns[0], new_dataframe.columns[1]).to_html()
+        elif graph[0] == 'regression':
+            if len(new_dataframe.columns) != 2:
+                messages.error(request, "Para gráficos de regressão é necessário informar 2 campos!")
+                return HttpResponseRedirect('.')
+            graph_render = regression_plot(new_dataframe, new_dataframe.columns[0]).to_html(default_height=height)
 
     # moda = {'CountryID': 'Não há moda na amostra', '2021 Score': [5650000.0, 58180.0], 'Property Rights': 4610000.0, 'Judical Effectiveness': 2820000.0}
     print(quartil)
