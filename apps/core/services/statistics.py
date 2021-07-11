@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from statistics import NormalDist
 from sklearn.linear_model import LinearRegression
 
 
@@ -7,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 
 def mean(data):
     data_df = pd.DataFrame(data)
-    print('data_df', data_df)
+    # print('data_df', data_df)
     data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
@@ -192,3 +193,16 @@ def remove_inf(df):
         return df[~df.isin([np.nan, np.inf, -np.inf]).any(1)]
     else:
         return df[~df.isin([np.nan, np.inf, -np.inf])]
+
+def confidence_interval(data, confidence):
+
+    data_df = pd.DataFrame(data)
+    mean_df = mean(data_df)
+    standard_deviation_df = standard_deviation(data_df)
+
+    conf = []
+    for col in data_df.columns:
+        z_score = NormalDist().inv_cdf((1 + confidence) / 2.)
+        delta = z_score * (standard_deviation_df[col]/np.sqrt(len(data_df[col])))
+        conf.append((mean_df[col] - delta, mean_df[col] + delta))
+    return conf
