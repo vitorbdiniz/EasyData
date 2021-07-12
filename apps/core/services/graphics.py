@@ -167,3 +167,36 @@ def regression_plot(df:pd.DataFrame, target_var, independent_variables=[], dropn
             j=1
             i+=1
     return plot
+
+
+
+
+def plot_p_values(df, columns=[]):
+    fig = go.Figure()
+    fig.update_layout(title={'text': "P-Valores",'x':0.5,'xanchor': 'center','yanchor': 'top'})
+
+    quant_var = set(get_quant_var(df))
+    if len(columns) == 0:
+        columns = list(quant_var)
+    else:
+        columns = [ col for col in columns if col in quant_var ]
+
+    if len(columns) < 2:
+        return 'Menos que 2 variaveis quantitativas selecionadas'
+
+    x_axis = []
+    for i in range( len(columns) ):
+        col1 = columns[i]
+        for j in range( i+1, len(columns) ):
+            col2 = columns[j]
+            x_axis.append(f'p-valor: {col1} X {col2}')
+
+            fig.add_trace(go.Bar(
+                x = [x_axis[-1]],
+                y=[p_value(df, col1, col2, quant_var=columns)],
+                name=x_axis[-1]
+            ))
+
+    fig.add_trace( go.Scatter(x=x_axis, y = [0.05 for i in x_axis], name=f'Fronteira de Significância' ) )
+
+    return fig
