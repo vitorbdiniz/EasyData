@@ -99,6 +99,18 @@ def statistics(request, file_id):
                 messages.error(request, "Para gráficos de regressão é necessário informar 2 campos!")
                 return HttpResponseRedirect('.')
             graph_render = regression_plot(new_dataframe, new_dataframe.columns[0]).to_html(default_height=height)
+        elif graph[0] == 'pvalue':
+            try:
+                graph_render = plot_p_values(new_dataframe, columns=new_dataframe.columns).to_html(default_height=height)
+            except:
+                messages.error(request, "Para calcular o P-Valor é necessário informar pelo menos 2 campos quantitativos!")
+                return HttpResponseRedirect('.')
+        elif graph[0] == 'tvalue':
+            try:
+                graph_render = plot_t_statistic(new_dataframe, columns=new_dataframe.columns).to_html(default_height=height)
+            except:
+                messages.error(request, "Para calcular o T-Valor é necessário informar pelo menos 2 campos quantitativos!")
+                return HttpResponseRedirect('.')
 
     # moda = {'CountryID': 'Não há moda na amostra', '2021 Score': [5650000.0, 58180.0], 'Property Rights': 4610000.0, 'Judical Effectiveness': 2820000.0}
     print(quartil)
