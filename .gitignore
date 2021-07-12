@@ -3,8 +3,11 @@
 *.pyc
 __pycache__/
 env/
+venv/
 media/
 migrations/
 fixtures/
+share/
+lib64/
 *.sqlite3
 *.env
