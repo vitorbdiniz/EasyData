@@ -51,8 +51,8 @@ def statistics(request, file_id):
     tipo_arquivo = arquivo.file.name.split('.')[-1]
     dataframe = data_conversion.csv_to_df(arquivo.file, tipo=tipo_arquivo)
 
-    print(dataframe)
-    print(dataframe.empty)
+    # print(dataframe)
+    # print(dataframe.empty)
 
     media = mean(dataframe)
     mediana = median(dataframe)
@@ -60,6 +60,9 @@ def statistics(request, file_id):
     variancia = variance(dataframe)
     desvio = standard_deviation(dataframe)
     quartil = quartile(dataframe)
+    intervalo_confianca95 = confidence_interval(dataframe, 0.95)
+    intervalo_confianca99 = confidence_interval(dataframe, 0.99)
+    intervalo_confianca90 = confidence_interval(dataframe, 0.90)
 
     cabecalhos = dataframe.select_dtypes(include=np.number).columns.tolist()
     # cabecalhos = get_quant_var(dataframe)
@@ -99,6 +102,8 @@ def statistics(request, file_id):
                 messages.error(request, "Para gráficos de regressão é necessário informar 2 campos!")
                 return HttpResponseRedirect('.')
             graph_render = regression_plot(new_dataframe, new_dataframe.columns[0]).to_html(default_height=height)
+        # elif graph[0] == 'confidence_interval:
+             # ToDo
         elif graph[0] == 'pvalue':
             try:
                 graph_render = plot_p_values(new_dataframe, columns=new_dataframe.columns).to_html(default_height=height)
@@ -113,8 +118,8 @@ def statistics(request, file_id):
                 return HttpResponseRedirect('.')
 
     # moda = {'CountryID': 'Não há moda na amostra', '2021 Score': [5650000.0, 58180.0], 'Property Rights': 4610000.0, 'Judical Effectiveness': 2820000.0}
-    print(quartil)
-    print(list(quartil))
+    # print(quartil)
+    # print(list(quartil))
 
     context = {
         'form': UploadCsvForm(),
@@ -125,6 +130,9 @@ def statistics(request, file_id):
         'quartil': dict(quartil),
         'variance': list(variancia),
         'std': list(desvio),
+        'intervaloConfianca95':list(intervalo_confianca95), 
+        'intervaloConfianca99':list(intervalo_confianca99),
+        'intervaloConfianca90':list(intervalo_confianca90),
         'columns': colunas,
         'columns_num': cabecalhos,
     }

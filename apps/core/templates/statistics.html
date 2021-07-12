@@ -72,6 +72,36 @@
             <td>{{ value | floatformat:2 }}</td>
         {% endfor %}
     </tr>
+    <tr>
+        <th scope="row">Intervalo de Confiança 99%</th>
+        {% for tupla in intervaloConfianca99 %}
+            <td>
+                {% for value in tupla%}
+                    {{ value | floatformat:2 }} <br>
+                {% endfor %}
+            </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <th scope="row">Intervalo de Confiança 95%</th>
+        {% for tupla in intervaloConfianca95 %}
+            <td>
+                {% for value in tupla%}
+                    {{ value | floatformat:2 }} <br>
+                {% endfor %}
+            </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <th scope="row">Intervalo de Confiança 90%</th>
+        {% for tupla in intervaloConfianca90 %}
+            <td>
+                {% for value in tupla%}
+                    {{ value | floatformat:2 }} <br>
+                {% endfor %}
+            </td>
+        {% endfor %}
+    </tr>
   </tbody>
 </table>
 </div>
@@ -102,6 +132,10 @@
         <input class="form-check-input" name="graphs" type="radio" id="regression" value="regression">
         <label class="form-check-label" for="regression">Regressão</label>
     </div>
+    <!-- <div class="form-check form-check-inline">
+        <input class="form-check-input" name="graphs" type="radio" id="confidence_interval" value="confidence_interval">
+        <label class="form-check-label" for="confidence_interval">Intervalo de Confiança</label>
+    </div> -->
     <div class="form-check form-check-inline">
         <input class="form-check-input" name="graphs" type="radio" id="pvalue" value="pvalue">
         <label class="form-check-label" for="pvalue">P-Valor</label>

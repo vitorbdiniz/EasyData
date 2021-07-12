@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
+from statistics import NormalDist
+from sklearn.linear_model import LinearRegression
 
 from sklearn.linear_model import LinearRegression
 import scipy.stats as stats
 
-
-
 def mean(data):
     data_df = pd.DataFrame(data)
-    print('data_df', data_df)
+    # print('data_df', data_df)
     data_df = data[get_quant_var(data_df)]
     try:
         if data_df.shape[1] > 0:
@@ -194,6 +194,19 @@ def remove_inf(df):
     else:
         return df[~df.isin([np.nan, np.inf, -np.inf])]
 
+def confidence_interval(data, confidence):
+
+    data_df = pd.DataFrame(data)
+    data_df = data_df[get_quant_var(data_df)]
+    mean_df = mean(data_df)
+    standard_deviation_df = standard_deviation(data_df)
+
+    conf = []
+    for col in data_df.columns:
+        z_score = NormalDist().inv_cdf((1 + confidence) / 2.)
+        delta = z_score * (standard_deviation_df[col]/np.sqrt(len(data_df[col])))
+        conf.append((mean_df[col] - delta, mean_df[col] + delta))
+    return conf
 
 def p_value(df, col1, col2, quant_var=None):
     if quant_var is None:
@@ -221,6 +234,4 @@ def inference(df, col1, col2):
         return {'t_statistic' : inf.statistic, 'p_value': inf.pvalue}
     else:
         return f'Tipo da coluna {col1}: {df[col1].dtype}; tipo da coluna {col2}: {df[col2].dtype}'
-
-
 
