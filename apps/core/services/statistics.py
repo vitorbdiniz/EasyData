@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
 
+from sklearn.linear_model import LinearRegression
+import scipy.stats as stats
 
 
 
@@ -192,3 +193,29 @@ def remove_inf(df):
         return df[~df.isin([np.nan, np.inf, -np.inf]).any(1)]
     else:
         return df[~df.isin([np.nan, np.inf, -np.inf])]
+
+
+def p_value(df, col1, col2):
+    quant_var = get_quant_var(df)
+    if col1 in quant_var and col2 in quant_var:
+        return stats.ttest_ind(df[col1], df[col2]).pvalue
+    else:
+        return f'Tipo da coluna {col1}: {df[col1].dtype}; tipo da coluna {col2}: {df[col2].dtype}'
+        
+def t_statistic(df, col1, col2):
+    quant_var = get_quant_var(df)
+    if col1 in quant_var and col2 in quant_var:
+        return stats.ttest_ind(df[col1], df[col2]).statistic
+    else:
+        return f'Tipo da coluna {col1}: {df[col1].dtype}; tipo da coluna {col2}: {df[col2].dtype}'
+
+def inference(df, col1, col2):
+    quant_var = get_quant_var(df)
+    if col1 in quant_var and col2 in quant_var:
+        inf = stats.ttest_ind(df[col1], df[col2])
+        return {'t_statistic' : inf.statistic, 'p_value': inf.pvalue}
+    else:
+        return f'Tipo da coluna {col1}: {df[col1].dtype}; tipo da coluna {col2}: {df[col2].dtype}'
+
+
+
