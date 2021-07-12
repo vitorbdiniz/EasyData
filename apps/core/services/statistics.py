@@ -197,6 +197,7 @@ def remove_inf(df):
 def confidence_interval(data, confidence):
 
     data_df = pd.DataFrame(data)
+    data_df = data_df[get_quant_var(data_df)]
     mean_df = mean(data_df)
     standard_deviation_df = standard_deviation(data_df)
 
