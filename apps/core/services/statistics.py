@@ -195,16 +195,18 @@ def remove_inf(df):
         return df[~df.isin([np.nan, np.inf, -np.inf])]
 
 
-def p_value(df, col1, col2):
-    quant_var = get_quant_var(df)
+def p_value(df, col1, col2, quant_var=None):
+    if quant_var is None:
+        quant_var = get_quant_var(df)
     if col1 in quant_var and col2 in quant_var:
         data = df[[col1, col2]].dropna()
         return stats.ttest_ind(data[col1], data[col2]).pvalue
     else:
         return f'Tipo da coluna {col1}: {df[col1].dtype}; tipo da coluna {col2}: {df[col2].dtype}'
 
-def t_statistic(df, col1, col2):
-    quant_var = get_quant_var(df)
+def t_statistic(df, col1, col2, quant_var=None):
+    if quant_var is None:
+        quant_var = get_quant_var(df)
     if col1 in quant_var and col2 in quant_var:
         data = df[[col1, col2]].dropna()
         return stats.ttest_ind(data[col1], data[col2]).statistic

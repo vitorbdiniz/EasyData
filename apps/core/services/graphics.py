@@ -220,7 +220,7 @@ def plot_t_statistic(df, columns=[]):
         col1 = columns[i]
         for j in range( i+1, len(columns) ):
             col2 = columns[j]
-            x_axis.append(f'p-valor: {col1} X {col2}')
+            x_axis.append(f'Estatística-T: {col1} X {col2}')
 
             fig.add_trace(go.Bar(
                 x = [x_axis[-1]],
