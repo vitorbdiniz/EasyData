@@ -21,6 +21,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# EMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config("EMAIL_HOST", default="")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+EMAIL_PORT = config("EMAIL_PORT", default="")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default="")
+DEFAULT_FROM_EMAIL = config("EMAIL_FROM_EMAIL", default="")
+
 # Location where will store static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 

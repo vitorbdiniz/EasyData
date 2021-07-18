@@ -6,9 +6,16 @@
     {% csrf_token %}
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
     <fieldset>
@@ -38,7 +45,8 @@
         <div class="form-group" style="margin-top:10px;">
             <input class="btn btn-md btn-primary btn-block" type="submit" value="Entrar">
             <a class="btn btn-md btn-outline-primary btn-block" href="{% url 'register' %}" >Cadastrar-se</a>
-        </div>        
+            <a class="btn btn-md btn-outline-primary btn-block" href="{% url 'forgot_password' %}" >Esqueceu a senha?</a>
+        </div>       
     </fieldset>
     </form>
 </div>
