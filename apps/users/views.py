@@ -53,12 +53,15 @@ def forgot(request):
     if request.method == "POST":
         form = ForgotPassword(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            print(email)
-            uri = _generate_url_one_time_forgot_password('reset_password', request, email)
-            print(uri)
-            message = "Clique aqui para resetar sua senha: %s" % uri
-            _send_mail_plain_text(message, email)
+            try:
+                email = form.cleaned_data.get('email')
+                print(email)
+                uri = _generate_url_one_time_forgot_password('reset_password', request, email)
+                print(uri)
+                message = "Clique aqui para resetar sua senha: %s" % uri
+                _send_mail_plain_text(message, email)
+            except:
+                messages.error(request, 'Esse email não está cadastrado em nossa base. :(')
             messages.success(request, 'Email enviado com sucesso para ' + email)
             return redirect('login')
 
