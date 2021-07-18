@@ -62,6 +62,7 @@ def forgot(request):
                 _send_mail_plain_text(message, email)
             except:
                 messages.error(request, 'Esse email não está cadastrado em nossa base. :(')
+                return redirect('forgot_password')
             messages.success(request, 'Email enviado com sucesso para ' + email)
             return redirect('login')
 
