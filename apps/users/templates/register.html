@@ -4,6 +4,20 @@
 <div class="col-md-4 col-md-offset-4 panel-default" style="margin: 0 auto;">
     <form method='POST' action='.'>
     {% csrf_token %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <fieldset>
         <div class="form-group py-2">
             <label for="{{ form.username.id_for_label }}">{{ form.username.label }}:</label>

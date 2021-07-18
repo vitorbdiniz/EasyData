@@ -17,10 +17,25 @@ def register(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, 'Conta criada para ' + username)
-            return redirect('login')
+            try:
+                email = form.cleaned_data.get('email')
+                User.objects.get(email=email)
+                messages.error(request, 'Já existe um usuário cadastrado com o email: ' + email)
+                return redirect('register')
+            except User.MultipleObjectsReturned:
+                print('User.MultipleObjectsReturned')
+                messages.error(request, 'Já existe um usuário cadastrado com o email: ' + email)
+                return redirect('register')
+            except User.DoesNotExist:
+                print('User.DoesNotExist')
+                user = form.save()
+                username = form.cleaned_data.get('username')
+                messages.success(request, 'Conta criada para ' + username)
+                return redirect('login')
+            except:
+                print('except')
+                messages.error(request, 'Ops. Aconteceu algum erro indesejado.')
+                return redirect('register')
 
     context = {'form': form}
     return render(request, 'register.html', context)
