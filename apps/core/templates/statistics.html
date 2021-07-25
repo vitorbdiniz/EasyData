@@ -110,54 +110,74 @@
 <h4>Gráficos</h4>
 
 <form action=".">
-<div>
-    <p>Qual gráfico deseja exibir?</p>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="boxplot" value="boxplot" checkbox>
-        <label class="form-check-label" for="boxplot">Boxplot</label>
+    <div>
+        <p>Qual gráfico deseja exibir?</p>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="boxplot" value="boxplot" checkbox>
+            <label class="form-check-label" for="boxplot">Boxplot</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="histogram" value="histogram">
+            <label class="form-check-label" for="histogram">Histograma</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="scatter" value="scatter">
+            <label class="form-check-label" for="scatter">Dispersão</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="heatmap" value="heatmap">
+            <label class="form-check-label" for="heatmap">Heatmap</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="regression" value="regression">
+            <label class="form-check-label" for="regression">Regressão</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="confidence_interval" value="confidence_interval">
+            <label class="form-check-label" for="confidence_interval">Boxplot de Intervalo de Confiança</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="pvalue" value="pvalue">
+            <label class="form-check-label" for="pvalue">P-Valor</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="graphs" type="radio" id="tvalue" value="tvalue">
+            <label class="form-check-label" for="tvalue">T-Valor</label>
+        </div>
     </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="histogram" value="histogram">
-        <label class="form-check-label" for="histogram">Histograma</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="scatter" value="scatter">
-        <label class="form-check-label" for="scatter">Dispersão</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="heatmap" value="heatmap">
-        <label class="form-check-label" for="heatmap">Heatmap</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="regression" value="regression">
-        <label class="form-check-label" for="regression">Regressão</label>
-    </div>
-    <!-- <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="confidence_interval" value="confidence_interval">
-        <label class="form-check-label" for="confidence_interval">Intervalo de Confiança</label>
-    </div> -->
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="pvalue" value="pvalue">
-        <label class="form-check-label" for="pvalue">P-Valor</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="graphs" type="radio" id="tvalue" value="tvalue">
-        <label class="form-check-label" for="tvalue">T-Valor</label>
-    </div>
-</div>
 
-<br>
-<div>
-    <p>Quais campos deseja calcular?</p>
-    {% for coluna in columns_num %}
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="statistics_names" id="{{ coluna }}" value="{{ coluna }}">
-        <label class="form-check-label" for="{{ coluna }}">{{ coluna }}</label>    
+    <div id='confidenceSlider'>
+        <br>   
+        <p>Selecione o Intervalo de Confiança desejado para o boxplot:</p>
+        <div class="slidecontainer">
+            <input type="range" step="0.1" min="90.0" max="100.0" value="95.0" class="slider" id="seletorConfianca" name="seletor_confianca">
+            <p>Confiança: <span id='confianca'></span>%</p>
+        </div>
     </div>
-    {% endfor %}
-    <button class="btn btn-md btn-outline-primary btn-block" type="submit">Enviar</button>
-    </form>
-</div>
+
+    <script>
+    var slider = document.getElementById("seletorConfianca");
+    var output = document.getElementById("confianca");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+    output.innerHTML = this.value;
+    }
+    </script>
+
+    <br>
+    <div>
+        <p>Quais campos deseja calcular?</p>
+        {% for coluna in columns_num %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="statistics_names" id="{{ coluna }}" value="{{ coluna }}">
+                <label class="form-check-label" for="{{ coluna }}">{{ coluna }}</label>    
+            </div>
+        {% endfor %}
+        <button class="btn btn-md btn-outline-primary btn-block" type="submit">Enviar</button>
+        
+    </div>
+</form>
 
 {% if graph %}
 {% autoescape off %}{{ graph }}{% endautoescape %}

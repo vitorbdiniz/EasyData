@@ -233,3 +233,19 @@ def plot_t_statistic(df, columns=[]):
 
     return fig
 
+def plot_conf_interval(df, confidence):
+    nrows = 1 if df.shape[1] <= 5 else int(df.shape[1]/5) +1
+    ncols = df.shape[1] if df.shape[1] <= 5 else 5
+    intervals = confidence_interval(df, confidence)
+    
+    plots = make_subplots(rows=nrows, cols=ncols,subplot_titles=df.columns)
+    plots.update_layout(title={'text': "Boxplots de Intervalo de Confiança",'x':0.5,'xanchor': 'center','yanchor': 'top'})
+    i,j,z = 1,1,0
+    for interv in intervals:
+        plots.add_box(y=interv, row=i, col=j, name=df.columns[z])
+        j+=1
+        z+=1
+        if j>ncols:
+            j=1
+            i+=1
+    return plots

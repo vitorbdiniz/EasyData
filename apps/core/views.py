@@ -102,8 +102,8 @@ def statistics(request, file_id):
                 messages.error(request, "Para gráficos de regressão é necessário informar 2 campos!")
                 return HttpResponseRedirect('.')
             graph_render = regression_plot(new_dataframe, new_dataframe.columns[0]).to_html(default_height=height)
-        # elif graph[0] == 'confidence_interval:
-             # ToDo
+        elif graph[0] == 'confidence_interval':
+            graph_render = plot_conf_interval(new_dataframe, (float(request.GET.get('seletor_confianca')))/100).to_html(default_height=height)
         elif graph[0] == 'pvalue':
             try:
                 graph_render = plot_p_values(new_dataframe, columns=new_dataframe.columns).to_html(default_height=height)
