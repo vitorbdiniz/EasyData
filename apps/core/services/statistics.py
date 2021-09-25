@@ -6,6 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LinearRegression
 import scipy.stats as stats
 
+import plotly.express as px
+
 def mean(data):
     data_df = pd.DataFrame(data)
     # print('data_df', data_df)
@@ -235,3 +237,15 @@ def inference(df, col1, col2):
     else:
         return f'Tipo da coluna {col1}: {df[col1].dtype}; tipo da coluna {col2}: {df[col2].dtype}'
 
+def logarithmic(df, eixo_x, eixo_y):
+    df = df.sort_values(by=[eixo_x]) #nome da coluna que possui os valores que vamos utilizar no eixo x
+    fig = plt.figure(figsize=(6, 4)) #tamanho do graphic
+    plt.scatter(df[eixo_x],df[eixo_y])
+    plt.plot(df[eixo_x],df[eixo_y])
+    plt.semilogx()
+    plt.xlabel("Eixo x") #titulo do eixo x
+    plt.ylabel("Eixo y") #titulo do eixo y
+    plt.title("EasyData",fontsize=14) #titulo do gráfico
+    plt.show()
+
+def exponential():
